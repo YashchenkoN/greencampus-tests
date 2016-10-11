@@ -8,6 +8,7 @@ import ua.greencampus.tests.entity.EntityResponse;
 import ua.greencampus.tests.entity.User;
 import ua.greencampus.tests.request.IdRequest;
 import ua.greencampus.tests.request.user.CreateUserRequest;
+import ua.greencampus.tests.request.user.UpdateUserRequest;
 
 /**
  * @author Mykola Yashchenko
@@ -38,6 +39,16 @@ public class UserService extends AbstractService {
 
     public User get(String userId, ResponseStatus expectedStatus, String... messages) {
         EntityResponse<User> content = get(new IdRequest(GreenCampusApi.USER, userId), ResponseType.USER_ENTITY,
+                expectedStatus, messages);
+        return content.getEntity();
+    }
+
+    public User update(String userId, User user) {
+        return update(userId, user, ResponseStatus.SUCCESS);
+    }
+
+    public User update(String userId, User user, ResponseStatus expectedStatus, String... messages) {
+        EntityResponse<User> content = put(new UpdateUserRequest(userId, user), ResponseType.USER_ENTITY,
                 expectedStatus, messages);
         return content.getEntity();
     }

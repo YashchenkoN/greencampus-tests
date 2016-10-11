@@ -7,6 +7,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -78,6 +79,21 @@ public class GreenCampusClient implements Client {
     }
 
     public Response put(Request request) {
+        HttpPut putRequest = new HttpPut(baseUrl + request.getUrl());
+        putRequest.setEntity(new StringEntity(request.getBody().getContent(), ContentType.APPLICATION_JSON));
+
+        try {
+            LOGGER.info("PUT request to " + baseUrl + request.getUrl());
+            LOGGER.info("REQUEST BODY:\n" + request.getBody().getContent());
+            HttpResponse httpResponse = httpClient.execute(putRequest);
+            // todo more abstraction
+            String responseContent = getContent(httpResponse);
+            LOGGER.info("RESPONSE STATUS: " + httpResponse.getStatusLine().getStatusCode());
+            LOGGER.info("RESPONSE BODY:\n" + responseContent);
+            return new JsonResponse(responseContent, httpResponse.getStatusLine().getStatusCode());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
