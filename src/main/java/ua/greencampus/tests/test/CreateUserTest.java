@@ -17,7 +17,7 @@ import static org.junit.Assert.assertNotNull;
 @TestCase
 public class CreateUserTest extends BaseTest {
 
-    private UserService userService = serviceFactory.build(UserService.class);
+    private UserService userService = getService(UserService.class);
 
     @Test
     public void testSuccessCreate() {
@@ -40,8 +40,7 @@ public class CreateUserTest extends BaseTest {
 
         String email = UUID.randomUUID().toString() + "@email.com";
 
-        userService.create(email, null, ResponseStatus.ERROR, "password may not be empty",
-                "password size should be 5 or greater");
+        userService.create(email, null, ResponseStatus.ERROR, "password may not be empty");
         userService.create(email, "", ResponseStatus.ERROR, "password may not be empty",
                 "password size should be 5 or greater");
     }

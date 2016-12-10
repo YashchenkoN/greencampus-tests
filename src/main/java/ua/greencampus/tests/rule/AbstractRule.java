@@ -4,6 +4,7 @@ import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 import ua.greencampus.tests.client.GreenCampusClient;
+import ua.greencampus.tests.common.Users;
 import ua.greencampus.tests.service.AbstractService;
 import ua.greencampus.tests.service.ServiceFactory;
 
@@ -24,8 +25,7 @@ public abstract class AbstractRule implements TestRule {
     }
 
     protected <T extends AbstractService> T getService(Class<T> service) {
-        // todo
-        return new ServiceFactory(new GreenCampusClient("http://localhost:8080/api")).build(service);
+        return getService(service, Users.ADMIN.getEmail(), Users.ADMIN.getPassword());
     }
 
     protected <T extends AbstractService> T getService(Class<T> service, String email, String name) {
